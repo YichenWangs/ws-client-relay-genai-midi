@@ -1,0 +1,14 @@
+{
+  "name": "web-client-for-genai-midi",
+  "version": "1.0.0",
+  "description": "a simple nodejs websocket client for genai midi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yichen Wang",
+  "license": "CC-BY-NC-4.0",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
