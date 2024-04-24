@@ -11,11 +11,32 @@ genai_ws.on('open', function open() {
   genai_ws.send('/channel/0/noteoff/0/0');
 });
 
+/**
+ * Websocket Client that connects to AR ensemble server.
+ */
 var ws_temp = new WebSocket('ws://localhost:3000')
 
 ws_temp.onopen;
 
+ws_temp.on('message', function message(data) {
+  console.log('Received from the AR-ensemble server: %s', data);
 
+  var route_data = data.toString().substring(0, data.length-1);
+  console.log(route_data);
+  genai_ws.send(route_data);
+
+
+});
+
+ws_temp.on('error', function error(data) {
+  console.log("Websocket error:" + data.code);
+  ws_temp.close();
+  
+});
+ws_temp.on('close', function close(data) {
+  console.log("The connection is closed.")
+  console.log("Error information" + data);
+});
 
 genai_ws.on('message', function message(data) {
   //console.log('Received from the AI agent: %s', data);
@@ -25,9 +46,12 @@ genai_ws.on('message', function message(data) {
     var route_data_from_ai_to_human = parse_data + "/ai";
     if (ws_temp.readyState == WebSocket.OPEN) {
         
-        console.log("sending to server" + route_data_from_ai_to_human);
+        //console.log("sending to server" + route_data_from_ai_to_human);
         ws_temp.send( route_data_from_ai_to_human);
     }
+
+
+
   // Broadcast to hololens --- TODO: does this work?
     //console.log(route_data_from_ai_to_human);
     // // testing AI to musician.
